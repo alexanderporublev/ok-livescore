@@ -24,8 +24,9 @@ livescore -- это площадка, на которой организатор
     1. [Схема инфраструктуры](./docs/02-devops/01-infrastruture.md)
     2. [Схема мониторинга](./docs/02-devops/02-monitoring.md)
 
-[//]: # (3. Тесты)
-
-[//]: # (4. Архитектура)
-
-[//]: # (    1. [Компонентная схема]&#40;./docs/04-architecture/01-arch.md&#41;)
+3. Тесты
+	1. [Тесткейсы](./docs/03-tasting/user-story-0001.md)
+	
+4. Архитектура
+   1. [Описание DTO](./docs/04-architecture/01-dto.md)
+   2. [Схема архитектуры](./docs/04-architecture/02-archscheme.md)
