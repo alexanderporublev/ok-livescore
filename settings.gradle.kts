@@ -18,3 +18,5 @@ pluginManagement {
 
 include("ok-livescore")
 include("ok-livescore-api-v1")
+include("ok-livescore-common")
+include("ok-livescore-mappers-v1")

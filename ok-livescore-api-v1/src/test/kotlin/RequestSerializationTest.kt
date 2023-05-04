@@ -12,7 +12,7 @@ class RequestSerializationTest {
         requestId = "123",
         debug = MatchDebug(
             mode = MatchRequestDebugMode.STUB,
-            stub = MatchRequestDebugStubs.BAD_TITLE
+            stub = MatchRequestDebugStubs.BAD_PARTICIPANT_NAME
         ),
         ad = MatchCreateObject(
             eventId = "0",

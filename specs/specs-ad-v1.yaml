@@ -246,7 +246,7 @@ components:
         - $ref: '#/components/schemas/MatchRequestDebug'
         - type: object
           properties:
-            ad:
+            match:
               $ref: '#/components/schemas/MatchCreateObject'
 
     MatchReadObject:
@@ -262,7 +262,7 @@ components:
         - $ref: '#/components/schemas/MatchRequestDebug'
         - type: object
           properties:
-            ad:
+            match:
               $ref: '#/components/schemas/MatchReadObject'
 
     MatchUpdateObject:
@@ -419,8 +419,7 @@ components:
         - success
         - notFound
         - badId
-        - badTitle
-        - badDescription
-        - badVisibility
+        - badParticipantName
+        - badScore
         - cannotDelete
         - badSearchString
