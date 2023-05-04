@@ -14,7 +14,7 @@ class RequestSerializationTest {
             mode = MatchRequestDebugMode.STUB,
             stub = MatchRequestDebugStubs.BAD_PARTICIPANT_NAME
         ),
-        ad = MatchCreateObject(
+        match = MatchCreateObject(
             eventId = "0",
             particapant1 = "Petrov",
             particapant2 = "Ivanov",
