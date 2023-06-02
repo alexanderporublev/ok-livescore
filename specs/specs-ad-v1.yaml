@@ -1,0 +1,425 @@
+openapi: 3.0.4
+info:
+  title: "Livescore ${VERSION_APP}"
+  description: This is a place where you can current scores on a tournament
+  license:
+    name: Apache 2.0
+    url: https://www.apache.org/licenses/LICENSE-2.0.html
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080/v1
+tags:
+  - name: match
+    description: Встреча
+paths:
+  /match/create:
+    post:
+      tags:
+        - match
+      summary: Create match
+      operationId: matchCreate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchCreateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchCreateResponse'
+  /match/read:
+    post:
+      tags:
+        - match
+      summary: Read match
+      operationId: matchRead
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchReadRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchReadResponse'
+  /ad/update:
+    post:
+      tags:
+        - match
+      summary: Update match
+      operationId: matchUpdate
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchUpdateRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchUpdateResponse'
+  /ad/delete:
+    post:
+      tags:
+        - match
+      summary: Delete match
+      operationId: matchDelete
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchDeleteRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchDeleteResponse'
+  /ad/matches:
+    post:
+      tags:
+        - match
+      summary: get all matches
+      operationId: matches
+      requestBody:
+        description: Request body
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MatchesRequest'
+        required: true
+      responses:
+        200:
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MatchesResponse'
+
+components:
+  schemas:
+
+    IRequest:
+      type: object
+      description: Базовый интерфейс для всех запросов
+      properties:
+        requestType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+      discriminator:
+        propertyName: requestType
+        mapping:
+          create: '#/components/schemas/MatchCreateRequest'
+          read:   '#/components/schemas/MatchReadRequest'
+          update: '#/components/schemas/MatchUpdateRequest'
+          delete: '#/components/schemas/MatchDeleteRequest'
+          offers: '#/components/schemas/MatchesRequest'
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: string
+        group:
+          type: string
+        field:
+          type: string
+        message:
+          type: string
+
+    ResponseResult:
+      type: string
+      enum:
+        - success
+        - error
+
+    IResponse:
+      type: object
+      description: Базовый интерфейс для всех ответов
+      properties:
+        responseType:
+          type: string
+          description: Поле-дескриминатор для вычисления типа запроса
+          example: create
+        requestId:
+          type: string
+          description: Идентификатор запроса для отладки
+        result:
+          $ref: '#/components/schemas/ResponseResult'
+        errors:
+          type: array
+          items:
+            $ref: '#/components/schemas/Error'
+
+      discriminator:
+        propertyName: responseType
+        mapping:
+          create: '#/components/schemas/MatchCreateResponse'
+          read:   '#/components/schemas/MatchReadResponse'
+          update: '#/components/schemas/MatchUpdateResponse'
+          delete: '#/components/schemas/MatchDeleteResponse'
+          offers: '#/components/schemas/MatchesResponse'
+          #init: '#/components/schemas/AdInitResponse'
+
+
+    UserId:
+      type: string
+      description: Идентификатор пользователя
+    MatchId:
+      type: string
+      description: Идентификатор матча
+    MatchLock:
+      type: string
+      description: Версия оптимистичной блокировки
+
+    BaseMatch:
+      type: object
+      description: Объект описывает свойства, одинаковые для create и update
+      properties:
+        eventId:
+          type: string
+          description: Идентификатор мероприятия
+        particapant1:
+          type: string
+          description: Первый участник
+        particapant2:
+          type: string
+          description: Второй участник
+        score1:
+          type: integer
+          description: Очки первого участника
+        score2:
+            type: integer
+            description: Очки второго участника
+        court:
+          type: string
+          description: Наименование корта
+        datetime:
+          type: string
+          format: date # or date-time
+          description: Время начала матча
+        matchStatus:
+          $ref: '#/components/schemas/MatchStatus'
+
+
+    MatchStatus:
+      type: string
+      description: 'Сторона сделки: спрос или предложение'
+      enum:
+        - inprogress
+        - completed
+
+
+
+    #AdInitResponse:
+    #  allOf:
+    #    - $ref: '#/components/schemas/IResponse'
+
+    MatchCreateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseMatch'
+
+    MatchCreateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/MatchRequestDebug'
+        - type: object
+          properties:
+            match:
+              $ref: '#/components/schemas/MatchCreateObject'
+
+    MatchReadObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/MatchId'
+
+    MatchReadRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/MatchRequestDebug'
+        - type: object
+          properties:
+            match:
+              $ref: '#/components/schemas/MatchReadObject'
+
+    MatchUpdateObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseMatch'
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/MatchId'
+            lock:
+              $ref: '#/components/schemas/MatchLock'
+
+    MatchUpdateRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/MatchRequestDebug'
+        - type: object
+          properties:
+            match:
+              $ref: '#/components/schemas/MatchUpdateObject'
+
+    MatchDeleteObject:
+      allOf:
+        - type: object
+          properties:
+            id:
+              $ref: '#/components/schemas/MatchId'
+            lock:
+              $ref: '#/components/schemas/MatchLock'
+
+    MatchDeleteRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/MatchRequestDebug'
+        - type: object
+          properties:
+            match:
+              $ref: '#/components/schemas/MatchDeleteObject'
+
+#    AdSearchFilter:
+#      type: object
+#      description: Набор фильтров для поиска
+#      properties:
+#        searchString:
+#          type: string
+#          description: Поисковая строка, которая будет искаться в объявлениях
+
+#    AdSearchRequest:
+#      allOf:
+#        - $ref: '#/components/schemas/IRequest'
+#        - $ref: '#/components/schemas/AdRequestDebug'
+#        - type: object
+#          properties:
+#            adFilter:
+#              $ref: '#/components/schemas/AdSearchFilter'
+
+    MatchesObject:
+      $ref: '#/components/schemas/MatchReadObject'
+
+    MatchesRequest:
+      allOf:
+        - $ref: '#/components/schemas/IRequest'
+        - $ref: '#/components/schemas/MatchRequestDebug'
+        - type: object
+          properties:
+            ad:
+              $ref: '#/components/schemas/MatchesObject'
+
+    MatchResponseObject:
+      allOf:
+        - $ref: '#/components/schemas/BaseMatch'
+        - type: object
+          description: Объект, который возвращается в ответе бэкенда
+          properties:
+            id:
+              $ref: '#/components/schemas/MatchId'
+            ownerId:
+              $ref: '#/components/schemas/UserId'
+            lock:
+              $ref: '#/components/schemas/MatchLock'
+
+
+
+    MatchResponseSingle:
+      allOf:
+        - type: object
+          description: Ответ с одним объектом объявления
+          properties:
+            ad:
+              $ref: '#/components/schemas/MatchResponseObject'
+
+    MatchResponseMulti:
+      allOf:
+        - type: object
+          description: Список найденных объектов
+          properties:
+            ads:
+              type: array
+              items:
+                $ref: '#/components/schemas/MatchResponseObject'
+
+    MatchCreateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/MatchResponseSingle'
+
+    MatchReadResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/MatchResponseSingle'
+
+    MatchUpdateResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/MatchResponseSingle'
+
+    MatchDeleteResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/MatchResponseSingle'
+
+    MatchesResponse:
+      allOf:
+        - $ref: '#/components/schemas/IResponse'
+        - $ref: '#/components/schemas/MatchResponseSingle'
+        - $ref: '#/components/schemas/MatchResponseMulti'
+
+    # STUBS ======================
+    MatchRequestDebugMode:
+      type: string
+      enum:
+        - prod
+        - test
+        - stub
+
+    MatchRequestDebug:
+      type: object
+      properties:
+        debug:
+          $ref: '#/components/schemas/MatchDebug'
+
+    MatchDebug:
+      type: object
+      properties:
+        mode:
+          $ref: '#/components/schemas/MatchRequestDebugMode'
+        stub:
+          $ref: '#/components/schemas/MatchRequestDebugStubs'
+
+    MatchRequestDebugStubs:
+      type: string
+      description: Перечисления всех стабов
+      enum:
+        - success
+        - notFound
+        - badId
+        - badParticipantName
+        - badScore
+        - cannotDelete
+        - badSearchString
