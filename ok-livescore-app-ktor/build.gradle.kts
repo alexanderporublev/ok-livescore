@@ -23,6 +23,7 @@ repositories {
 
 application {
     mainClass.set("io.ktor.server.cio.EngineMain")
+    //mainClass.set("ru.otus.livescore.app.ApplicationKt")
 }
 
 ktor {
@@ -48,7 +49,7 @@ kotlin {
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
         binaries {
             executable {
-                entryPoint = "ru.otus.otuskotlin.marketplace.app.main"
+                entryPoint = "ru.otus.livescore.app.main"
             }
         }
     }
@@ -100,6 +101,10 @@ kotlin {
                 implementation(ktor("test-host"))
                 implementation(ktor("content-negotiation", prefix = "client-"))
                 implementation(ktor("websockets", prefix = "client-"))
+
+                implementation(kotlin("test-junit"))
+                implementation(ktor("content-negotiation", prefix = "client-"))
+
             }
         }
 

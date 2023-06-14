@@ -1,4 +1,4 @@
-package ru.otus.otuskotlin.livescore.mappers.v1
+package ru.otus.otuskotlin.marketplace.mappers.v1
 
 import ru.otus.api.v1.models.*
 import ru.otus.otuskotlin.livescore.common.LsContext

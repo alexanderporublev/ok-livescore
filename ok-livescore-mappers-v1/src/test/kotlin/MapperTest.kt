@@ -1,5 +1,6 @@
 package ru.otus.otuskotlin.livescore.mappers.v1
 
+import fromTransport
 import kotlinx.datetime.toJavaInstant
 import org.junit.Test
 import ru.otus.api.v1.models.*
@@ -7,11 +8,10 @@ import ru.otus.otuskotlin.livescore.common.LsContext
 import ru.otus.otuskotlin.livescore.common.models.*
 import ru.otus.otuskotlin.livescore.common.stubs.LsStubs
 import java.time.LocalDateTime
-import java.time.OffsetTime
 import java.time.ZoneOffset
 import kotlin.test.assertEquals
 import ru.otus.otuskotlin.livescore.common.models.LsState
-import ru.otus.otuskotlin.marketplace.mappers.v1.toTransportMatch
+import toTransportMatch
 
 class MapperTest {
     @Test
