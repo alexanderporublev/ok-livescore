@@ -24,5 +24,3 @@ include("ok-livescore-mappers-v1")
 include("ok-livescore-app-ktor")
 include("ok-livescore-biz")
 include("ok-livescore-stubs")
-include("ok-livescore-app-ktor:commonTest")
-findProject(":ok-livescore-app-ktor:commonTest")?.name = "commonTest"

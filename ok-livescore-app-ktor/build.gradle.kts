@@ -42,9 +42,6 @@ kotlin {
     jvm {
         withJava()
     }
-//    linuxX64 {}
-//    macosX64 {}
-//    macosArm64 {}
 
     targets.withType<org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget> {
         binaries {
@@ -80,11 +77,7 @@ kotlin {
                 implementation(project(":ok-livescore-mappers-v1"))
 
                 // Stubs
-                 implementation(project(":ok-livescore-stubs"))
-
-//                implementation(project(":ok-marketplace-lib-logging-kermit"))
-//                implementation(project(":ok-marketplace-api-log1"))
-//                implementation(project(":ok-marketplace-mappers-log1"))
+                implementation(project(":ok-livescore-stubs"))
 
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
@@ -92,21 +85,21 @@ kotlin {
             }
         }
 
-        val commonTest by getting {
-            dependencies {
-                implementation(kotlin("test"))
-                implementation(kotlin("test-common"))
-                implementation(kotlin("test-annotations-common"))
-
-                implementation(ktor("test-host"))
-                implementation(ktor("content-negotiation", prefix = "client-"))
-                implementation(ktor("websockets", prefix = "client-"))
-
-                implementation(kotlin("test-junit"))
-                implementation(ktor("content-negotiation", prefix = "client-"))
-
-            }
-        }
+//        val commonTest by getting {
+//            dependencies {
+//                implementation(kotlin("test"))
+//                implementation(kotlin("test-common"))
+//                implementation(kotlin("test-annotations-common"))
+//
+//                implementation(ktor("test-host"))
+//                implementation(ktor("content-negotiation", prefix = "client-"))
+//                implementation(ktor("websockets", prefix = "client-"))
+//
+//                implementation(kotlin("test-junit"))
+//                implementation(ktor("content-negotiation", prefix = "client-"))
+//
+//            }
+//        }
 
         val jvmMain by getting {
             dependencies {
@@ -137,7 +130,6 @@ kotlin {
                 // transport models
                 implementation(project(":ok-livescore-api-v1"))
                 implementation(project(":ok-livescore-mappers-v1"))
-//                implementation(project(":ok-marketplace-lib-logging-logback"))
 
                 // Это для логирования
                 implementation("com.sndyuk:logback-more-appenders:1.8.8")

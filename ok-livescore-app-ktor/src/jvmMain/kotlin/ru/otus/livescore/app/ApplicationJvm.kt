@@ -14,8 +14,6 @@ import io.ktor.server.plugins.defaultheaders.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import io.ktor.server.websocket.*
-import org.slf4j.event.Level
-import ru.otus.livescore.app.module
 import ru.otus.otuskotlin.marketplace.api.v1.apiV1Mapper
 import ru.otus.livescore.app.plugins.initAppSettings
 import ru.otus.otuskotlin.livescore.app.v1.v1Match

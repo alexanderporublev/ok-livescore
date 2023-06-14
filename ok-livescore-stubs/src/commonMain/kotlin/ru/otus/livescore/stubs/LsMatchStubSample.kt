@@ -7,7 +7,7 @@ import ru.otus.otuskotlin.livescore.common.models.*
 object LsMatchStubSample {
     val LS_MATCH1: LsMatch
         get() = LsMatch(
-            id = LsMatchId("666"),
+            id = LsMatchId("667"),
             eventId = LsEventId("777"),
             participant1 = "Ivanov",
             participant2 = "Petrov",
