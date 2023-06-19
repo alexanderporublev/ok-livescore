@@ -9,7 +9,7 @@ dependencies {
     val coroutinesVersion: String by project
 
     implementation(kotlin("stdlib"))
-    implementation("io.ktor:ktor-client-okhttp-jvm:$kotestVersion")
+    implementation("io.ktor:ktor-client-okhttp-jvm:$ktorVersion")
 
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.kotest:kotest-assertions-core:$kotestVersion")

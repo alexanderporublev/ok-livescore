@@ -7,11 +7,10 @@ import ru.otus.otuskotlin.livescore.common.LsContext
 import ru.otus.otuskotlin.livescore.common.models.*
 import ru.otus.otuskotlin.livescore.common.stubs.LsStubs
 import java.time.LocalDateTime
-import java.time.OffsetTime
 import java.time.ZoneOffset
 import kotlin.test.assertEquals
 import ru.otus.otuskotlin.livescore.common.models.LsState
-import ru.otus.otuskotlin.marketplace.mappers.v1.toTransportMatch
+import ru.otus.otuskotlin.marketplace.mappers.v1.*
 
 class MapperTest {
     @Test
