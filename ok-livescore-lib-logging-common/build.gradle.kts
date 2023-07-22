@@ -2,26 +2,25 @@ plugins {
     kotlin("multiplatform")
 }
 
+group = rootProject.group
+version = rootProject.version
+
 kotlin {
     jvm {}
-    linuxX64 {}
     macosX64 {}
-    macosArm64 {}
+    linuxX64 {}
+    macosArm64()
 
     sourceSets {
         val coroutinesVersion: String by project
-        val kotlinLoggingJvmVersion: String by project
-
-        all { languageSettings.optIn("kotlin.RequiresOptIn") }
+        val datetimeVersion: String by project
 
         @Suppress("UNUSED_VARIABLE")
         val commonMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-common"))
-
-                implementation(project(":ok-livescore-common"))
-                implementation(project(":ok-livescore-stubs"))
-
+                implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutinesVersion")
+                api("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
             }
         }
         @Suppress("UNUSED_VARIABLE")
@@ -29,16 +28,12 @@ kotlin {
             dependencies {
                 implementation(kotlin("test-common"))
                 implementation(kotlin("test-annotations-common"))
-
-                api("org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutinesVersion")
             }
         }
         @Suppress("UNUSED_VARIABLE")
         val jvmMain by getting {
             dependencies {
                 implementation(kotlin("stdlib-jdk8"))
-                implementation("io.github.microutils:kotlin-logging-jvm:$kotlinLoggingJvmVersion")
-
             }
         }
         @Suppress("UNUSED_VARIABLE")
