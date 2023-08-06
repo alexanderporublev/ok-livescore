@@ -7,7 +7,7 @@ import ru.otus.otuskotlin.livescore.common.models.LsMatchId
 object LsMatchStub {
     fun get(): LsMatch = LS_MATCH1.copy()
 
-    //fun prepareResult(block: LsMatch.() -> Unit): LsMatch = get().apply(block)
+    fun prepareResult(block: LsMatch.() -> Unit): LsMatch = get().apply(block)
 
 /*    fun prepareSearchList(filter: String, type: MkplDealSide) = listOf(
         mkplAdDemand("d-666-01", filter, type),

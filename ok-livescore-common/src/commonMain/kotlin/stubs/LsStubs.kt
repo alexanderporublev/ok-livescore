@@ -9,4 +9,5 @@ enum class LsStubs {
     BAD_SCORE,
     CANNOT_DELETE,
     BAD_SEARCH_STRING,
+    DB_ERROR,
 }

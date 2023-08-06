@@ -20,6 +20,7 @@ kotlin {
 
 
                 api("org.jetbrains.kotlinx:kotlinx-datetime:$datetimeVersion")
+                implementation(project(":ok-livescore-lib-logging-common"))
             }
         }
         val commonTest by getting {

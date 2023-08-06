@@ -9,6 +9,7 @@ data class LsContext(
     var command: LsCommand = LsCommand.NONE,
     var state: LsState = LsState.NONE,
     val errors: MutableList<LsError> = mutableListOf(),
+    var settings: LsCorSettings = LsCorSettings.NONE,
 
     var workMode: LsWorkMode = LsWorkMode.PROD,
     var stubCase: LsStubs = LsStubs.NONE,
@@ -19,4 +20,10 @@ data class LsContext(
     var matchFilterRequest: LsMatchFilter = LsMatchFilter(),
     var matchResponse: LsMatch = LsMatch(),
     var matchesResponse: MutableList<LsMatch> = mutableListOf(),
-)
+
+    var matchValidating: LsMatch = LsMatch(),
+
+    var matchValidated: LsMatch = LsMatch(),
+
+
+    )

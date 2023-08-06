@@ -4,4 +4,5 @@ enum class LsState {
     NONE,
     RUNNING,
     FAILING,
+    FINISHING,
 }
