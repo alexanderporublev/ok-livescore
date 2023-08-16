@@ -1,6 +1,6 @@
 package ru.otus.livescore.app
 
-import ru.otus.LSMatchProcessor
+import ru.otus.livescore.biz.LSMatchProcessor
 
 data class LSAppSettings(
     val appUrls: List<String>,

@@ -13,10 +13,11 @@ import org.apache.kafka.clients.producer.Producer
 import org.apache.kafka.clients.producer.ProducerRecord
 import org.apache.kafka.common.errors.WakeupException
 //import ru.otus.otuskotlin.marketplace.api.logs.mapper.toLog
-import ru.otus.LSMatchProcessor
+import ru.otus.livescore.biz.LSMatchProcessor
 
-import ru.otus.process
+import ru.otus.livescore.biz.process
 import  ru.otus.otuskotlin.livescore.common.LsContext
+import ru.otus.otuskotlin.livescore.common.LsCorSettings
 //import ru.otus.otuskotlin.marketplace.common.MkplCorSettings
 import ru.otus.otuskotlin.livescore.common.models.LsCommand
 import java.time.Duration
@@ -36,7 +37,7 @@ class AppKafkaConsumer(
     private val config: AppKafkaConfig,
     consumerStrategies: List<ConsumerStrategy>,
     //setting: MkplCorSettings = corSettings,
-    private val processor: LSMatchProcessor = LSMatchProcessor(),
+    private val processor: LSMatchProcessor = LSMatchProcessor(LsCorSettings()),
     private val consumer: Consumer<String, String> = config.createKafkaConsumer(),
     private val producer: Producer<String, String> = config.createKafkaProducer()
 ) {

@@ -1,4 +1,4 @@
-package ru.otus
+package ru.otus.livescore.biz
 
 import kotlinx.datetime.Clock
 import ru.otus.otuskotlin.livescore.common.LsContext
