@@ -7,11 +7,13 @@ import ru.otus.otuskotlin.livescore.common.LsCorSettings
 import ru.otus.livescore.biz.workers.*
 import ru.otus.livescore.biz.groups.*
 import ru.otus.livescore.biz.validation.*
-
+import ru.otus.livescore.biz.general.*
 
 import ru.otus.livescore.cor.rootChain
 import ru.otus.livescore.cor.worker
 import ru.otus.otuskotlin.livescore.common.models.*
+import ru.otus.livescore.cor.chain
+import ru.otus.livescore.biz.repo.*
 
 class LSMatchProcessor(val settings: LsCorSettings) {
 
@@ -20,6 +22,7 @@ class LSMatchProcessor(val settings: LsCorSettings) {
     companion object {
         private val BusinessChain = rootChain<LsContext> {
             initStatus("Инициализация статуса")
+            initRepo("Инициализация репозитория")
             operation("Создание матча", LsCommand.CREATE) {
                 stubs("Обработка стабов") {
                     stubCreateSuccess("Имитация успешной обработки")
@@ -47,6 +50,12 @@ class LSMatchProcessor(val settings: LsCorSettings) {
 
                     finishMatchValidation("Завершение проверок")
                 }
+                chain {
+                    title = "Логика сохранения"
+                    repoPrepareCreate("Подготовка объекта для сохранения")
+                    repoCreate("Создание объявления в БД")
+                }
+                prepareResult("Подготовка ответа")
             }
 
             operation("Получение матча", LsCommand.READ){
@@ -65,6 +74,17 @@ class LSMatchProcessor(val settings: LsCorSettings) {
 
                     finishMatchValidation("Успешное завершение процедуры валидации")
                 }
+                chain {
+                    title = "Логика чтения"
+                    repoRead("Чтение объявления из БД")
+                    worker {
+                        title = "Подготовка ответа для Read"
+                        on { state == LsState.RUNNING }
+                        handle { matchRepoDone = matchRepoRead }
+                    }
+                }
+                prepareResult("Подготовка ответа")
+
             }
 
             operation("Изменение матча", LsCommand.UPDATE){
@@ -100,6 +120,14 @@ class LSMatchProcessor(val settings: LsCorSettings) {
                     finishMatchValidation("Успешное завершение процедуры валидации")
 
                 }
+                chain {
+                    title = "Логика сохранения"
+                    repoRead("Чтение объявления из БД")
+                    repoPrepareUpdate("Подготовка объекта для обновления")
+                    repoUpdate("Обновление объявления в БД")
+                }
+                prepareResult("Подготовка ответа")
+
             }
 
             operation("Удалить объявление", LsCommand.DELETE) {
@@ -117,6 +145,13 @@ class LSMatchProcessor(val settings: LsCorSettings) {
 
                     finishMatchValidation("Успешное завершение процедуры валидации")
                 }
+                chain {
+                    title = "Логика удаления"
+                    repoRead("Чтение объявления из БД")
+                    repoPrepareDelete("Подготовка объекта для удаления")
+                    repoDelete("Удаление объявления из БД")
+                }
+                prepareResult("Подготовка ответа")
             }
 
         }.build()

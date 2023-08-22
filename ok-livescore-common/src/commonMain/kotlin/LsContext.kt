@@ -4,6 +4,7 @@ import kotlinx.datetime.Instant
 import ru.otus.otuskotlin.livescore.common.models.*
 import ru.otus.otuskotlin.livescore.common.stubs.LsStubs
 import ru.otus.otuskotlin.livescore.common.models.LsState
+import ru.otus.otuskotlin.livescore.common.repo.IMatchesRepository
 
 data class LsContext(
     var command: LsCommand = LsCommand.NONE,
@@ -24,6 +25,12 @@ data class LsContext(
     var matchValidating: LsMatch = LsMatch(),
 
     var matchValidated: LsMatch = LsMatch(),
+
+    var matchRepo: IMatchesRepository = IMatchesRepository.NONE,
+    var matchRepoPrepare: LsMatch = LsMatch(),
+    var matchRepoRead: LsMatch = LsMatch(),
+    var matchRepoDone: LsMatch = LsMatch(),
+    var matchesRepoDone: MutableList<LsMatch> = mutableListOf(),
 
 
     )
