@@ -21,7 +21,7 @@ class RequestSerializationTest {
             score1 = 0,
             score2 = 0,
             court = "central",
-            datetime = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
+            datetime = "2023-04-3014:50",//LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")),
             matchStatus = MatchStatus.INPROGRESS
         )
     )
@@ -38,7 +38,9 @@ class RequestSerializationTest {
 
     @Test
     fun deserialize() {
+        println("deserialize")
         val json = apiV1Mapper.writeValueAsString(request)
+        println(json)
         val obj = apiV1Mapper.readValue(json, IRequest::class.java) as MatchCreateRequest
 
         assertEquals(request, obj)

@@ -17,7 +17,8 @@ import ru.otus.livescore.biz.repo.*
 
 class LSMatchProcessor(val settings: LsCorSettings) {
 
-    suspend fun exec(ctx: LsContext) = BusinessChain.exec( ctx.apply { this.settings =  this@LSMatchProcessor.settings } )
+    suspend fun exec(ctx: LsContext) = BusinessChain.exec( ctx.apply {
+        this.settings =  this@LSMatchProcessor.settings } )
 
     companion object {
         private val BusinessChain = rootChain<LsContext> {
@@ -98,9 +99,13 @@ class LSMatchProcessor(val settings: LsCorSettings) {
                 }
 
                 validation {
+
                     worker("Копируем поля в matchValidating") { matchValidating = matchRequest.deepCopy() }
                     worker("Очистка id") { matchValidating.id = LsMatchId(matchValidating.id.asString().trim()) }
-                    worker ( "Очистка идентификатора события" ) { matchValidating.eventId = LsEventId(matchValidating.eventId.asString().trim()) }
+                    worker ( "Очистка идентификатора события" ) {
+                        println("valid " + matchRequest.eventId.asString())
+                        matchValidating.eventId = LsEventId(matchValidating.eventId.asString().trim())
+                    }
                     worker("Очистка участника 1") { matchValidating.participant1 = matchValidating.participant1.trim() }
                     worker("Очистка участника 2") { matchValidating.participant2 = matchValidating.participant2.trim() }
                     worker("Очистка корта") { matchValidating.court = matchValidating.court.trim() }

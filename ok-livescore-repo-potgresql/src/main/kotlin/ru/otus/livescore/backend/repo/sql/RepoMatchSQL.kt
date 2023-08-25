@@ -19,9 +19,9 @@ class RepoMatchSQL (
             properties.url.startsWith("jdbc:postgresql://") -> "org.postgresql.Driver"
             else -> throw IllegalArgumentException("Unknown driver for url ${properties.url}")
         }
-
+        println(properties.url)
         Database.connect(
-            properties.url, driver, properties.user, properties.password
+            properties.url, driver/*, properties.user, properties.password*/
         )
 
         transaction {

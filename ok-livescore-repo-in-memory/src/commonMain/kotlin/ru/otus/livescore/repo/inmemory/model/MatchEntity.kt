@@ -1,4 +1,5 @@
 package ru.otus.livescore.repo.inmemory.model
+import kotlinx.datetime.LocalDateTime
 import ru.otus.otuskotlin.livescore.common.models.*
 
 data class MatchEntity (
@@ -11,16 +12,18 @@ data class MatchEntity (
     val court: String? = null,
     val status: String? = null,
     val lock: String? = null,
+    val dateTime: String? = null,
 ){
     constructor(model: LsMatch) : this(
         id = model.id.asString().takeIf { it.isNotBlank() },
         participant1 = model.participant1.takeIf { it.isNotBlank() },
         participant2 = model.participant2.takeIf { it.isNotBlank() },
-        score1 = model.score1.takeIf { it > 0 }.toString(),
-        score2 = model.score2.takeIf { it > 0 }.toString(),
+        score1 = model.score1.takeIf { it >= 0 }.toString(),
+        score2 = model.score2.takeIf { it >= 0 }.toString(),
         eventId = model.eventId.asString().takeIf { it.isNotBlank() },
         court = model.court.takeIf { it.isNotBlank() },
         status = model.status.takeIf { it != LsMatchStatus.NONE }?.name,
+        dateTime = model.datetime.toString(),
         lock = model.lock.asString().takeIf { it.isNotBlank() }
     )
 
@@ -34,5 +37,6 @@ data class MatchEntity (
         court = court?: "",
         status = status?.let { LsMatchStatus.valueOf(it) }?: LsMatchStatus.NONE,
         lock = lock?.let { LsMatchLock(it) }?: LsMatchLock.NONE,
+        datetime = kotlinx.datetime.Instant.parse(dateTime?:""),
     )
 }

@@ -37,6 +37,7 @@ class MatchRepoInMemory(
         val key = randomUuid()
         val match = rq.match.copy(id = LsMatchId(key), lock = LsMatchLock(randomUuid()))
         val entity = MatchEntity(match)
+        println("putt " + key + " match " + match.score1 + " req " + rq.match.score1);
         cache.put(key, entity)
         return DbMatchResponse(
             data = match,
@@ -48,7 +49,9 @@ class MatchRepoInMemory(
         val key = rq.id.takeIf { it != LsMatchId.NONE }?.asString() ?: return resultErrorEmptyId
         return cache.get(key)
             ?.let {
+                println("score1 " + it.participant1)
                 DbMatchResponse(
+
                     data = it.toInternal(),
                     isSuccess = true,
                 )
@@ -59,6 +62,7 @@ class MatchRepoInMemory(
         val key = rq.match.id.takeIf { it != LsMatchId.NONE }?.asString() ?: return resultErrorEmptyId
         val oldLock = rq.match.lock.takeIf { it != LsMatchLock.NONE }?.asString() ?: return resultErrorEmptyLock
         val newMatch = rq.match.copy(lock = LsMatchLock(randomUuid()))
+        println("newMatch " + newMatch.eventId)
         val entity = MatchEntity(newMatch)
         return mutex.withLock {
             val oldMatch = cache.get(key)

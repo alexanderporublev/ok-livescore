@@ -46,6 +46,7 @@ private fun MatchDebug?.transportToStubCase(): LsStubs = when (this?.stub) {
 }
 
 fun LsContext.fromTransport(request: MatchCreateRequest) {
+    println("create")
     command = LsCommand.CREATE
     requestId = request.requestId()
     matchRequest = request.match?.toInternal() ?: LsMatch()
@@ -105,6 +106,7 @@ private fun MatchUpdateObject.toInternal(): LsMatch = LsMatch(
     id = this.id.toMatchId(),
     participant1 = this.particapant1 ?: "",
     participant2 = this.particapant2 ?: "",
+    eventId = LsEventId(this.eventId?: ""),
     score1 = this.score1 ?: 0,
     score2 = this.score2 ?: 0,
     court = this.court ?: "",
