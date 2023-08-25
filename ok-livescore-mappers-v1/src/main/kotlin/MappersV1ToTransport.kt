@@ -1,9 +1,13 @@
 package ru.otus.otuskotlin.marketplace.mappers.v1
 
+import kotlinx.datetime.Instant
+import kotlinx.datetime.toJavaInstant
 import ru.otus.api.v1.models.*
 import ru.otus.otuskotlin.livescore.common.LsContext
 import ru.otus.otuskotlin.livescore.common.models.*
 import ru.otus.otuskotlin.livescore.mappers.v1.exceptions.UnknownLsCommand
+import java.time.LocalDateTime
+import java.time.ZoneOffset
 
 fun LsContext.toTransportMatch(): IResponse = when (val cmd = command) {
     LsCommand.CREATE -> toTransportCreate()
@@ -16,28 +20,28 @@ fun LsContext.toTransportMatch(): IResponse = when (val cmd = command) {
 
 fun LsContext.toTransportCreate() = MatchCreateResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == LsState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == LsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     ad = matchResponse.toTransportMatch()
 )
 
 fun LsContext.toTransportRead() = MatchReadResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == LsState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == LsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     ad = matchResponse.toTransportMatch()
 )
 
 fun LsContext.toTransportUpdate() = MatchUpdateResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == LsState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == LsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     ad = matchResponse.toTransportMatch()
 )
 
 fun LsContext.toTransportDelete() = MatchDeleteResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == LsState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == LsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     ad = matchResponse.toTransportMatch()
 )
@@ -46,7 +50,7 @@ fun LsContext.toTransportDelete() = MatchDeleteResponse(
 
 fun LsContext.toTransportMatches() = MatchesResponse(
     requestId = this.requestId.asString().takeIf { it.isNotBlank() },
-    result = if (state == LsState.RUNNING) ResponseResult.SUCCESS else ResponseResult.ERROR,
+    result = if (state == LsState.FINISHING) ResponseResult.SUCCESS else ResponseResult.ERROR,
     errors = errors.toTransportErrors(),
     ads = matchesResponse.toTransportMatches()
 )
@@ -70,7 +74,7 @@ private fun LsMatch.toTransportMatch(): MatchResponseObject = MatchResponseObjec
     score1 = score1,
     score2 = score2,
     court = court.takeIf { it.isNotBlank() },
-    datetime = datetime.toString(),
+    datetime = LocalDateTime.ofInstant(datetime.toJavaInstant(), ZoneOffset.UTC).toString(),
     matchStatus = status.toTransportMatchStatus()
 )
 

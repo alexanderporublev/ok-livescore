@@ -5,8 +5,11 @@ import com.fasterxml.jackson.databind.MapperFeature
 import com.fasterxml.jackson.databind.json.JsonMapper
 import ru.otus.api.v1.models.IRequest
 import ru.otus.api.v1.models.IResponse
+import   com.fasterxml.jackson.core.JsonProcessingException
+import  com.fasterxml.jackson.databind.JsonMappingException
 
 val apiV1Mapper = JsonMapper.builder().run {
+    println("build mapper")
     configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
     enable(MapperFeature.USE_BASE_TYPE_AS_DEFAULT_IMPL)
 //    setSerializationInclusion(JsonInclude.Include.NON_NULL)
@@ -16,8 +19,21 @@ val apiV1Mapper = JsonMapper.builder().run {
 fun apiV1RequestSerialize(request: IRequest): String = apiV1Mapper.writeValueAsString(request)
 
 @Suppress("UNCHECKED_CAST")
-fun <T : IRequest> apiV1RequestDeserialize(json: String): T =
-    apiV1Mapper.readValue(json, IRequest::class.java) as T
+fun <T : IRequest> apiV1RequestDeserialize(json: String): T {
+    try {
+        println("deserialize")
+        return apiV1Mapper.readValue(json, IRequest::class.java) as T
+    }
+    catch (ex: JsonProcessingException) {
+        println(ex.message)
+        return IRequest::class.java as T
+    }
+     catch (ex: JsonMappingException)   {
+         println(ex.message)
+         return IRequest::class.java as T
+     }
+
+}
 
 fun apiV1ResponseSerialize(response: IResponse): String = apiV1Mapper.writeValueAsString(response)
 

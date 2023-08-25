@@ -5,6 +5,8 @@ import org.jetbrains.kotlin.util.suffixIfNot
 val ktorVersion: String by project
 val logbackVersion: String by project
 val serializationVersion: String by project
+val exposedVersion: String by project
+val postgresDriverVersion: String by project
 
 // ex: Converts to "io.ktor:ktor-ktor-server-netty:2.0.1" with only ktor("netty")
 fun ktor(module: String, prefix: String = "server-", version: String? = this@Build_gradle.ktorVersion): Any =
@@ -31,6 +33,7 @@ ktor {
         localImageName.set(project.name + "-ktor")
         imageTag.set(project.version.toString())
         jreVersion.set(io.ktor.plugin.features.JreVersion.JRE_17)
+
     }
 }
 
@@ -75,13 +78,25 @@ kotlin {
                 // v2 api
                 implementation(project(":ok-livescore-api-v1"))
                 implementation(project(":ok-livescore-mappers-v1"))
+                implementation(project(":ok-livescore-lib-logging-common"))
 
                 // Stubs
                 implementation(project(":ok-livescore-stubs"))
+                implementation(project(":ok-livescore-repo-in-memory"))
+                implementation(project(":ok-livescore-repo-potgresql"))
+
+                //  implementation(project(":ok-livescore-repo-stubs"))
 
                 implementation("io.ktor:ktor-serialization-kotlinx-json:$ktorVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-core:$serializationVersion")
                 implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$serializationVersion")
+
+                implementation("org.postgresql:postgresql:$postgresDriverVersion")
+
+                implementation("org.jetbrains.exposed:exposed-core:$exposedVersion")
+                implementation("org.jetbrains.exposed:exposed-dao:$exposedVersion")
+                implementation("org.jetbrains.exposed:exposed-jdbc:$exposedVersion")
+
             }
         }
 

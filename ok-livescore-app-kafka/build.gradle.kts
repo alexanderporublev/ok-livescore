@@ -45,6 +45,7 @@ dependencies {
     implementation(project(":ok-livescore-common"))
     implementation(project(":ok-livescore-api-v1"))
     implementation(project(":ok-livescore-mappers-v1"))
+    implementation(project(":ok-livescore-lib-logging-common"))
 
     // logic
     implementation(project(":ok-livescore-biz"))

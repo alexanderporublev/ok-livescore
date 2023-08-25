@@ -1,25 +1,42 @@
 package ru.otus.livescore.app.v1
 
 import io.ktor.server.application.*
+import io.ktor.server.plugins.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
 import ru.otus.api.v1.models.*
 import ru.otus.livescore.app.LSAppSettings
 import ru.otus.otuskotlin.livescore.common.LsContext
 import ru.otus.otuskotlin.marketplace.mappers.v1.*
+import ru.otus.otuskotlin.marketplace.api.v1.*
 
 suspend fun ApplicationCall.createMatch(appSettings: LSAppSettings) {
-    val processor = appSettings.processor
-    val request = receive<MatchCreateRequest>()
-    val context = LsContext()
-    context.fromTransport(request)
-    processor.exec(context)
-    respond(context.toTransportCreate())
+    try {
+
+        val processor = appSettings.processor
+        //val request = receive<MatchCreateRequest>()
+        val json = receiveText()
+        println(json)
+        val request = apiV1RequestDeserialize<MatchCreateRequest>(json)
+        println("reqid")
+        val context = LsContext()
+        context.fromTransport(request)
+        println("reqid" + request.requestId)
+        processor.exec(context)
+        respond(context.toTransportCreate())
+    }
+    catch (ex : CannotTransformContentToTypeException){
+        println(ex.message)
+    }
 }
 
 suspend fun ApplicationCall.readMatch(appSettings: LSAppSettings) {
     val processor = appSettings.processor
-    val request = receive<MatchReadRequest>()
+    val json = receiveText()
+    println(json)
+    val request = apiV1RequestDeserialize<MatchReadRequest>(json)
+    println("reqid")
+   // val request = receive<>()
     val context = LsContext()
     context.fromTransport(request)
     processor.exec(context)
@@ -28,7 +45,10 @@ suspend fun ApplicationCall.readMatch(appSettings: LSAppSettings) {
 
 suspend fun ApplicationCall.updateMatch(appSettings: LSAppSettings) {
     val processor = appSettings.processor
-    val request = receive<MatchUpdateRequest>()
+    val json = receiveText()
+    println(json)
+    val request = apiV1RequestDeserialize<MatchUpdateRequest>(json)
+    println("eve " + request.match?.eventId)
     val context = LsContext()
     context.fromTransport(request)
     processor.exec(context)

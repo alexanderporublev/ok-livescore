@@ -12,7 +12,8 @@ data class LsMatch(
     var score2: Int = 0,
     var court: String = "",
     var datetime: Instant = Instant.NONE,
-    var status: LsMatchStatus = LsMatchStatus.NONE
+    var status: LsMatchStatus = LsMatchStatus.NONE,
+    var lock: LsMatchLock = LsMatchLock.NONE,
 ){
 
     fun deepCopy(): LsMatch = copy(

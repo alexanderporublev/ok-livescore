@@ -58,6 +58,7 @@ fun Application.moduleJvm(appSettings: LSAppSettings = initAppSettings()) {
 
     routing {
         get("/") {
+            println("Hello, world!")
             call.respondText("Hello, world!")
         }
 
